@@ -11010,7 +11010,7 @@ header.masthead h1, header.masthead .h1 {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     grid-gap: 30px;
     grid-row-gap: 30px;
-    width:80%;
+    width:100%;
     transition: .3s;
 }
 
@@ -11068,6 +11068,8 @@ header.masthead h1, header.masthead .h1 {
   position: sticky !important;
   top: 0;
   transition: .3s;
+  opacity: 0;
+  margin-right: -100%;
 }
 
 .carrito .header-carrito{
