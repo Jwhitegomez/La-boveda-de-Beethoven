@@ -117,7 +117,7 @@ function actualizarTotalCarrito() {
         var item = carritoItems[i];
         var precioElemento = item.getElementsByClassName('carrito-item-precio')[0];
         console.log(precioElemento);
-        var precio = parseFloat(precioElemento.innerText.replace('$', '').replace('.', '').replace('.',''));
+        var precio = parseFloat(precioElemento.innerText.replace('$', '').replace('.', '').replace('.', ''));
         console.log(precio);
         var cantidadItem = item.getElementsByClassName('carrito-item-cantidad')[0];
         var cantidad = cantidadItem.value;
@@ -215,8 +215,8 @@ function agregarItemAlCarrito(titulo, precio, imagenSrc) {
     `
     item.innerHTML = itemCarritoContenido;
     itemsCarrito.append(item);
- 
-    item.getElementsByClassName('btn-eliminar')[0].addEventListener('click',eliminarItemCarrito);
+
+    item.getElementsByClassName('btn-eliminar')[0].addEventListener('click', eliminarItemCarrito);
 
     var botonSumarCantidad = item.getElementsByClassName('sumar-cantidad')[0];
     botonSumarCantidad.addEventListener('click', sumarCantidad);
@@ -225,22 +225,73 @@ function agregarItemAlCarrito(titulo, precio, imagenSrc) {
     botonRestarCantidad.addEventListener('click', restarCantidad)
 }
 
-function pagarClicked(event){
-    alert("Gracias por su compra");
+function pagarClicked(event) {
+    (async () => {
+        const { value: formValues} = await Swal.fire({
+            title: 'Información personal',
+            html:
+                '<div class="form-floating mb-3">' +
+                    '<input class="form-control" id="nombre" type="text" placeholder="Enter your name..." data-sb-validations="required" />' +
+                    '<label for="name">Nombre completo</label>' +
+                    '<div class="invalid-feedback" data-sb-feedback="name:required">Este campo está vacio</div>' +
+                '</div>' +
+                '<div class="form-floating mb-3">' +
+                    '<input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />' +
+                    '<label for="email">Correo electrónico</label>' +
+                    '<div class="invalid-feedback" data-sb-feedback="email:required">Este campo está vacio</div>' +
+                    '<div class="invalid-feedback" data-sb-feedback="email:email">Este correo no es válido</div>' +
+                '</div>' +
+                '<div class="form-floating mb-3">'+
+                    '<input class="form-control" id="telefono" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />'+
+                    '<label for="phone">Número de teléfono</label>'+
+                    '<div class="invalid-feedback" data-sb-feedback="phone:required">Este campo está vacio</div>'+
+                '</div>'+
+                '<div class="form-floating mb-3">' +
+                    '<input class="form-control" id="direccion" type="text" placeholder="Enter your name..." data-sb-validations="required" />' +
+                    '<label for="name">Dirección</label>' +
+                    '<div class="invalid-feedback" data-sb-feedback="name:required">Este campo está vacio</div>' +
+                '</div>',
+
+            focusConfirm: false,
+            preConfirm: () => {
+                return [
+                    document.getElementById('nombre').value,
+                    document.getElementById('email').value,
+                    document.getElementById('telefono').value,
+                    document.getElementById('direccion').value
+                ]
+            },
+    
+            confirmButtonText: 'Finalizar compra',
+            confirmButtonColor: '#F4623A'
+            
+        })
+    
+        if (formValues) {
+            Swal.fire({
+                icon: 'success',
+                title: "Compra exitosa",
+                confirmButtonColor: '#F4623A'
+            });
+        }
+    })()
     var carritoItems = document.getElementsByClassName('carrito-items')[0];
-    while(carritoItems.hasChildNodes()){
+    while (carritoItems.hasChildNodes()) {
         carritoItems.removeChild(carritoItems.firstChild);
     }
     actualizarTotalCarrito();
     ocultarCarrito();
 }
 
-function hacerVisibleCarrito(){
-    carritoVisible=true;
+function hacerVisibleCarrito() {
+    carritoVisible = true;
     var carrito = document.getElementsByClassName('carrito')[0];
-    carrito.style.marginRight ='0';
+    carrito.style.marginRight = '0';
     carrito.style.opacity = '1';
 
     var items = document.getElementsByClassName('contenedor-items')[0];
     items.style.width = '75%';
 }
+
+
+
